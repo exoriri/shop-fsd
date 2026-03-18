@@ -1,0 +1,6 @@
+@use "../../shared/theme/variables.scss" as variables;
+
+.container {
+    background-color: variables.$background;
+    height: 100vh;
+}
