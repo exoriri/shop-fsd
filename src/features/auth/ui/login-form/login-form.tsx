@@ -1,9 +1,29 @@
-import { useState, type ChangeEventHandler } from 'react';
-import { Button, Flex, Form, Typography, type CheckboxChangeEvent } from 'antd';
-import { Checkbox, Input } from 'antd';
+import { useEffect, useState, type ChangeEventHandler } from 'react';
+import {
+  Button,
+  Flex,
+  Form,
+  Typography,
+  Checkbox,
+  Input,
+  type CheckboxChangeEvent,
+} from 'antd';
 
 import styles from './login-form.module.scss';
 import { useLogin } from '@/features/auth/api/useLogin';
+
+import PersonIcon from 'icons/person-icon.svg?react';
+import CrossIcon from 'icons/cross-icon.svg?react';
+import LockIcon from 'icons/lock-icon.svg?react';
+import EyeOffIcon from 'icons/eye-off-icon.svg?react';
+import { EyeOutlined } from '@ant-design/icons';
+import { Controller, useForm } from 'react-hook-form';
+import {
+  useLoginValidationSchema,
+  type LoginFormValues,
+} from '../../model/useLoginValidationSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginField } from './login-field';
 
 const { Title, Text } = Typography;
 
@@ -19,29 +39,38 @@ export const LoginForm = () => {
     rememberUser,
     setRememberUser,
   } = useLogin();
-  const [{ username, password }, setFields] = useState({
-    username: '',
-    password: '',
+  const schema = useLoginValidationSchema();
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
   });
+  const [passwordType, setPasswordType] = useState<'password' | 'input'>(
+    'password',
+  );
 
   const handleRememberChange = (e: CheckboxChangeEvent) => {
     setRememberUser(e.target.checked);
   };
 
   const handleLogin = () => {
-    login({ username, password });
+    handleSubmit((credentials) => {
+      login(credentials);
+    })();
   };
 
-  const handleInputChange =
-    (
-      type: keyof Fields,
-    ): ChangeEventHandler<HTMLInputElement, HTMLInputElement> =>
-    (e) => {
-      setFields((prevFields) => ({
-        ...prevFields,
-        [type]: e.target.value,
-      }));
-    };
+  const toggleShowingPassword = () => {
+    setPasswordType((prevType) =>
+      prevType === 'password' ? 'input' : 'password',
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -52,34 +81,39 @@ export const LoginForm = () => {
         </div>
 
         <Form className={styles.form}>
-          <Flex vertical className={styles.inputGroup}>
-            <label className={styles.label}>Логин</label>
-            <Input
+          <Flex gap={16} vertical>
+            <LoginField
               name="username"
-              size="large"
+              error={errors.username}
+              allowClear={{
+                clearIcon: <CrossIcon />,
+              }}
               placeholder="Введите логин"
-              className={styles.input}
-              value={username}
-              prefix
-              suffix
-              onChange={handleInputChange('username')}
+              label="Логин"
+              prefix={<PersonIcon />}
+              control={control}
             />
-          </Flex>
-          <Flex vertical className={styles.inputGroup}>
-            <label className={styles.label}>Пароль</label>
-            <Input
+            <LoginField
               name="password"
-              size="large"
-              placeholder="Введите логин"
-              className={styles.input}
-              value={password}
-              type="password"
-              prefix
-              suffix
-              onChange={handleInputChange('password')}
+              error={errors.password}
+              suffix={
+                <Button
+                  className={styles.eyeButton}
+                  onClick={toggleShowingPassword}
+                >
+                  {passwordType === 'password' ? (
+                    <EyeOffIcon />
+                  ) : (
+                    <EyeOutlined className={styles.eyeIcon} />
+                  )}
+                </Button>
+              }
+              placeholder="Введите пароль"
+              label="Пароль"
+              prefix={<LockIcon />}
+              control={control}
             />
           </Flex>
-
           <Checkbox
             checked={rememberUser}
             className={`${styles.rememberCheckbox} ${rememberUser ? styles.rememberChecked : ''}`}
@@ -106,9 +140,11 @@ export const LoginForm = () => {
               <div className={styles.line} />
             </div>
           </div>
-          <div>
-            <p>Нет аккаунта?</p>
-          </div>
+          <Flex justify="center">
+            <p className={styles.noAccountText}>
+              Нет аккаунта? <a className={styles.createLink}>Создать</a>
+            </p>
+          </Flex>
         </Form>
       </Flex>
     </div>

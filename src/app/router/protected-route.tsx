@@ -5,7 +5,6 @@ import { Flex, Spin } from 'antd';
 export const ProtectedRoute = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const refreshToken = useAuthStore((state) => state.refreshToken);
-  const user = useAuthStore((state) => state.user);
 
   if (!accessToken && !refreshToken) {
     return <Navigate to="/login" replace />;

@@ -1,0 +1,26 @@
+$lightBorder: #ededed;
+
+.inputGroup {
+  gap: 6px;
+}
+
+.formItem {
+  margin: 0;
+}
+
+.label {
+  font-size: 18px;
+  font-family: Inter;
+  color: #232323;
+}
+
+.input {
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 14px;
+  background-color: #ffffff;
+  border: 1.5px solid $lightBorder;
+  max-height: 55px;
+}

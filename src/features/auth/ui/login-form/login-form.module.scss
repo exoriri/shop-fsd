@@ -72,11 +72,10 @@ $lightBorder: #ededed;
   border: 1.5px solid $lightBorder;
 }
 
-
 .rememberText {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   color: variables.$strongDimColorText;
 }
 
@@ -137,3 +136,37 @@ $lightBorder: #ededed;
   height: 1px;
   background-color: $lightBorder;
 }
+
+.noAccountText {
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  color: #6C6C6C;
+}
+
+.createLink {
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: variables.$primaryColor;
+  text-decoration: underline;
+}
+
+.eyeButton {
+  padding: 0;
+  border: none;
+
+  &:hover {
+    border: none !important;
+  }
+}
+
+.eyeIcon {
+  font-size: 24px;
+
+  & svg {
+    fill: #c3c1c1;
+  }
+}
+
+.formItem {margin: 0;}

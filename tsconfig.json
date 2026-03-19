@@ -21,7 +21,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@/*":["./src/*"]
+      "@/*": ["./src/*"],
+      "icons/*": ["./public/icons/*"]
     }
   },
   "include": ["src"]
