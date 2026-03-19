@@ -1,3 +1,5 @@
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@/shared/theme/ThemeProvider';
 import { RouterProvider } from './router';
 
@@ -8,10 +10,14 @@ import '@fontsource/inter/700.css';
 
 import './app.css';
 
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
     <ThemeProvider>
-      <RouterProvider />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 };

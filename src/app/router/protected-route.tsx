@@ -11,9 +11,9 @@ export const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!user) {
+  if (!accessToken && !refreshToken) {
     return (
-      <Flex align="center" gap="medium">
+      <Flex justify='center' align="center" gap="medium">
         <Spin description={<p>Загрузка...</p>} size="large" />
       </Flex>
     );

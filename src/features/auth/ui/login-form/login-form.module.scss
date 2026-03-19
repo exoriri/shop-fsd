@@ -1,6 +1,7 @@
 @use '@/shared/theme/variables.scss' as variables;
 
 $borderColor: #efefef;
+$lightBorder: #ededed;
 
 .container {
   border-radius: 34px;
@@ -51,25 +52,14 @@ $borderColor: #efefef;
   gap: 32px;
 }
 
-.frame5 {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.frame3,
-.frame4 {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.text4,
-.text7 {
+.label {
   font-size: 18px;
   font-family: Inter;
-  line-height: 150%;
   color: #232323;
+}
+
+.inputGroup {
+  gap: 6px;
 }
 
 .input {
@@ -79,42 +69,11 @@ $borderColor: #efefef;
   padding: 14px 16px;
   gap: 14px;
   background-color: #ffffff;
-  border: 1.5px solid #ededed;
+  border: 1.5px solid $lightBorder;
 }
 
-.usericon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.ellipse1 {
-  height: 10px;
-  width: 10px;
-}
-
-.rectangle1 {
-  border-radius: 4px 4px 0 0;
-  height: 9px;
-  width: 14px;
-  border: 2px solid #cacaca;
-}
-
-.text5,
-.text9 {
-  font-size: 18px;
-  font-family: Inter;
-  line-height: 150%;
-  color: #232323;
-}
-
-.keep {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.rememberText{
+.rememberText {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -135,19 +94,28 @@ $borderColor: #efefef;
   height: 54px;
   font-size: 18px;
   font-family: "Inter";
-  border: 1px solid #357aff;
+  border: 1px solid variables.$strokeColor;
   cursor: pointer;
+  width: 100% !important;
 }
 
-.loginBtnText{
-  font-size: 18px;
-  color: #ffffff;
+.rememberCheckbox {
+  & span:first-of-type, input {
+    border-color: $lightBorder;
+    border-width: 2px;
+    width: 18px;
+    height: 18px;
+  }
 }
 
-.text13 {
+.rememberChecked {
+  & span:first-of-type {
+    background-color: variables.$primaryColor !important;
+  }
+}
+
+.loginBtnText {
   font-size: 18px;
-  font-family: Inter;
-  line-height: 120%;
   color: #ffffff;
 }
 
@@ -157,21 +125,15 @@ $borderColor: #efefef;
   gap: 10px;
 }
 
-.optinalText{
+.optinalText {
   font-size: 16px;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   color: #EBEBEB;
 }
 
-.text15 {
-  text-align: center;
-  font-size: 18px;
-  line-height: 150%;
-}
-
 .line {
   flex: 0.5;
   height: 1px;
-  background-color: #ededed;
+  background-color: $lightBorder;
 }

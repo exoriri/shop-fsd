@@ -1,13 +1,47 @@
-import { Button, Flex, Typography } from 'antd';
+import { useState, type ChangeEventHandler } from 'react';
+import { Button, Flex, Form, Typography, type CheckboxChangeEvent } from 'antd';
+import { Checkbox, Input } from 'antd';
 
 import styles from './login-form.module.scss';
+import { useLogin } from '@/features/auth/api/useLogin';
 
 const { Title, Text } = Typography;
 
+interface Fields {
+  username: string;
+  password: string;
+}
+
 export const LoginForm = () => {
-  const handleLogin = () => {
-    alert('auzi');
+  const {
+    login,
+    isPending: isSigningIn,
+    rememberUser,
+    setRememberUser,
+  } = useLogin();
+  const [{ username, password }, setFields] = useState({
+    username: '',
+    password: '',
+  });
+
+  const handleRememberChange = (e: CheckboxChangeEvent) => {
+    setRememberUser(e.target.checked);
   };
+
+  const handleLogin = () => {
+    login({ username, password });
+  };
+
+  const handleInputChange =
+    (
+      type: keyof Fields,
+    ): ChangeEventHandler<HTMLInputElement, HTMLInputElement> =>
+    (e) => {
+      setFields((prevFields) => ({
+        ...prevFields,
+        [type]: e.target.value,
+      }));
+    };
 
   return (
     <div className={styles.container}>
@@ -17,42 +51,53 @@ export const LoginForm = () => {
           <Text className={styles.text3}>Пожалуйста, авторизируйтесь</Text>
         </div>
 
-        <div className={styles.form}>
-          <div className={styles.frame5}>
-            <div className={styles.frame3}>
-              <p className={styles.text4}>Логин</p>
-              <div className={styles.input}>
-                <div className={styles.usericon}>
-                  <div className={styles.ellipse1} />
-                  <div className={styles.rectangle1} />
-                </div>
-                <p className={styles.text5}>test</p>
-                <img src="" alt="" />
-              </div>
-            </div>
+        <Form className={styles.form}>
+          <Flex vertical className={styles.inputGroup}>
+            <label className={styles.label}>Логин</label>
+            <Input
+              name="username"
+              size="large"
+              placeholder="Введите логин"
+              className={styles.input}
+              value={username}
+              prefix
+              suffix
+              onChange={handleInputChange('username')}
+            />
+          </Flex>
+          <Flex vertical className={styles.inputGroup}>
+            <label className={styles.label}>Пароль</label>
+            <Input
+              name="password"
+              size="large"
+              placeholder="Введите логин"
+              className={styles.input}
+              value={password}
+              type="password"
+              prefix
+              suffix
+              onChange={handleInputChange('password')}
+            />
+          </Flex>
 
-            <div className={styles.frame4}>
-              <p className={styles.text7}>Пароль</p>
-              <div className={styles.input}>
-                <img src="" alt="" />
-                <p className={styles.text9}>•••••••••••••</p>
-                <img src="" alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.keep}>
-            <img src="" alt="" />
+          <Checkbox
+            checked={rememberUser}
+            className={`${styles.rememberCheckbox} ${rememberUser ? styles.rememberChecked : ''}`}
+            onChange={handleRememberChange}
+          >
             <p className={styles.rememberText}>Запомнить данные</p>
-          </div>
+          </Checkbox>
 
           <div className={styles.footer}>
             <Button
               className={styles.loginBtn}
               onClick={handleLogin}
               type="primary"
+              loading={isSigningIn}
             >
-              <Text className={styles.loginBtnText}>Войти</Text>
+              {!isSigningIn && (
+                <Text className={styles.loginBtnText}>Войти</Text>
+              )}
             </Button>
 
             <div className={styles.footerOptionals}>
@@ -64,7 +109,7 @@ export const LoginForm = () => {
           <div>
             <p>Нет аккаунта?</p>
           </div>
-        </div>
+        </Form>
       </Flex>
     </div>
   );

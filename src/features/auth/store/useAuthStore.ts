@@ -1,6 +1,26 @@
-import type { AuthStore } from '@/shared/types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  image: string;
+}
+
+export interface AuthStore {
+  user: User | null;
+  accessToken: string | null;
+  refreshToken: string | null;
+  rememberUser: boolean;
+  setRememberUser: (remember: boolean) => void;
+  setUser: (user: User) => void;
+  setTokens: (accessToken: string, refreshToken: string) => void;
+  resetAuthStore: () => void;
+}
 
 export const useAuthStore = create<AuthStore>()(
   persist(
@@ -11,6 +31,15 @@ export const useAuthStore = create<AuthStore>()(
       rememberUser: false,
       setRememberUser: (remember) => {
         set({ rememberUser: remember });
+      },
+      setUser: (user) => {
+        set({ user });
+      },
+      setTokens: (accessToken, refreshToken) => {
+        set({ accessToken, refreshToken });
+      },
+      resetAuthStore: () => {
+        set({ user: null, accessToken: null, refreshToken: null, rememberUser: false });
       },
     }),
     {
