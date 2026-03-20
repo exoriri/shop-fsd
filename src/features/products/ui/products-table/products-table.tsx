@@ -10,6 +10,7 @@ import {
 import { useMemo, useState } from 'react';
 
 import styles from './products-table.module.scss';
+import { useElementHeight } from '../../lib/useElementHeight';
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>['rowSelection'];
@@ -26,6 +27,7 @@ interface DataType {
 
 interface ProductsTableProps {
   products: Array<Product> | undefined;
+  itemsAmount: number;
 }
 
 const columns: TableColumnsType<DataType> = [
@@ -33,12 +35,18 @@ const columns: TableColumnsType<DataType> = [
     title: 'Наименование',
     dataIndex: 'name',
     render: (text, record) => (
-      <Flex>
+      <Flex gap={18}>
         <Image
-          width={48}
           src={record.images?.[0]}
           alt={text}
-          preview
+          preview={false}
+          style={{
+            objectFit: 'contain',
+            width: 48,
+            height: 48,
+            maxWidth: 48,
+            maxHeight: 48,
+          }}
         />
         <span>{text}</span>
       </Flex>
@@ -50,9 +58,13 @@ const columns: TableColumnsType<DataType> = [
   { title: 'Цена, ₽', dataIndex: 'price' },
 ];
 
-export const ProductsTable = ({ products }: ProductsTableProps) => {
+export const ProductsTable = ({
+  products,
+  itemsAmount,
+}: ProductsTableProps) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState(false);
+  const { ref, height } = useElementHeight();
 
   const dataSource = useMemo(() => {
     return products?.map(
@@ -95,6 +107,7 @@ export const ProductsTable = ({ products }: ProductsTableProps) => {
   };
 
   const hasSelected = selectedRowKeys.length > 0;
+
   return (
     <Flex gap="medium" vertical className={styles.container}>
       <Flex align="center" gap="medium">
@@ -108,15 +121,23 @@ export const ProductsTable = ({ products }: ProductsTableProps) => {
         </Button>
         {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
       </Flex>
-      <Table<DataType>
-        rowSelection={rowSelection}
-        columns={columns}
-        sticky
-        dataSource={dataSource ?? []}
-        rowClassName={(record) =>
-          `${styles.row} ${selectedRowKeys.includes(record.key) ? styles.selectedRow : ''}`
-        }
-      />
+      <Flex style={{ flex: 1, minHeight: 0 }} ref={ref}>
+        <Table<DataType>
+          rowSelection={rowSelection}
+          columns={columns}
+          sticky
+          dataSource={dataSource ?? []}
+          rowClassName={(record) =>
+            `${styles.row} ${selectedRowKeys.includes(record.key) ? styles.selectedRow : ''}`
+          }
+          scroll={{ y: height - 100 }}
+          pagination={{
+            pageSize: 30,
+            total: itemsAmount,
+            showSizeChanger: false,
+          }}
+        />
+      </Flex>
     </Flex>
   );
 };

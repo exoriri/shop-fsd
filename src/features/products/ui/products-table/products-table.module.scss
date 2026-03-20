@@ -7,7 +7,7 @@ $borderColor: #e2e2e2;
     height: 22px;
     border-color: #b2b3b9;
     border-radius: 4px;
-    z-index: 999;
+    z-index: 100;
   }
 
   & :global(.ant-checkbox-checked) {
@@ -50,6 +50,9 @@ $borderColor: #e2e2e2;
 
 .container {
   background: #fff;
+  padding: 30px 26px 60px 26px;
+  flex: 1;
+  min-height: 0;
 
   & :global(.ant-table-thead > tr > th) {
     height: 73px;

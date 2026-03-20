@@ -16,6 +16,8 @@ interface ProductsResponse {
   limit: number;
 }
 
+const LIMIT = 30;
+
 const getProducts = async ({ limit, skip }: GepProductsParams) => {
   try {
     const response = await apiClient.get<ProductsResponse>(
@@ -37,12 +39,13 @@ export const useProducts = () => {
     queryKey: [QueryKeys.Products],
     queryFn: (queryKey) => {
       //   const [_] = queryKey;
-      return getProducts({ limit: 30, skip: 0 });
+      return getProducts({ limit: LIMIT, skip: 0 });
     },
   });
 
   return {
-    products: data,
+    products: data?.products,
+    total: data ? data.total : 0,
     loading: isPending,
   };
 };
