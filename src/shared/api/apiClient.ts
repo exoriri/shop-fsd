@@ -13,12 +13,13 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use((config) => {
   const authStorageStringified = localStorage.getItem(AUTH_STORAGE_NAME);
-  const { accessToken } = (
+  const {
+    state: { accessToken },
+  } = (
     authStorageStringified
       ? JSON.parse(authStorageStringified)
       : { accessToken: null, refreshToken: null }
-  ) as Tokens;
-
+  ) as { state: Tokens; version: number };
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }

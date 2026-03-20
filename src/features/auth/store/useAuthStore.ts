@@ -1,3 +1,4 @@
+import { AUTH_STORAGE_NAME } from '@/shared/constants';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -43,7 +44,7 @@ export const useAuthStore = create<AuthStore>()(
       },
     }),
     {
-      name: 'auth-storage',
+      name: AUTH_STORAGE_NAME,
       partialize: ({ accessToken, refreshToken, rememberUser }) => {
         if (rememberUser) {
           return {

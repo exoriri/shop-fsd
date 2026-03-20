@@ -1,15 +1,21 @@
-import type { LoginFormValues } from '@/features/auth/model/useLoginValidationSchema';
 import { Flex, Form, Input } from 'antd';
-import { Controller, type Control, type FieldError } from 'react-hook-form';
+import {
+  Controller,
+  type Control,
+  type FieldError,
+  type FieldValues,
+  type Path,
+} from 'react-hook-form';
 
-import styles from './login-field.module.scss';
+import styles from './Field.module.scss';
 
-interface LoginFieldProps {
+interface FieldProps<T extends FieldValues> {
   label: string;
-  name: 'username' | 'password';
+  name: Path<T>;
   placeholder: string;
   prefix: React.ReactNode;
   suffix?: React.ReactNode;
+  autoComplete?: string;
   allowClear?:
     | boolean
     | {
@@ -17,22 +23,24 @@ interface LoginFieldProps {
       }
     | undefined;
   error: FieldError | undefined;
-  control: Control<LoginFormValues>;
+  control: Control<T>;
 }
 
-export const LoginField = ({
+export const Field = <T extends FieldValues>({
   control,
   error,
   name,
   placeholder,
   allowClear,
+  label,
   prefix,
   suffix,
-}: LoginFieldProps) => {
+  ...restProps
+}: FieldProps<T>) => {
   return (
     <Flex vertical className={styles.inputGroup}>
       <label htmlFor={name} className={styles.label}>
-        Логин
+        {label}
       </label>
       <Form.Item
         className={styles.formItem}
@@ -51,6 +59,7 @@ export const LoginField = ({
               autoComplete="autocomplete"
               prefix={prefix}
               suffix={suffix}
+              {...restProps}
               {...field}
             />
           )}

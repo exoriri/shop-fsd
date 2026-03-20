@@ -1,11 +1,10 @@
-import { useEffect, useState, type ChangeEventHandler } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Flex,
   Form,
   Typography,
   Checkbox,
-  Input,
   type CheckboxChangeEvent,
 } from 'antd';
 
@@ -17,20 +16,15 @@ import CrossIcon from 'icons/cross-icon.svg?react';
 import LockIcon from 'icons/lock-icon.svg?react';
 import EyeOffIcon from 'icons/eye-off-icon.svg?react';
 import { EyeOutlined } from '@ant-design/icons';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import {
   useLoginValidationSchema,
   type LoginFormValues,
 } from '../../model/useLoginValidationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginField } from './login-field';
+import { Field } from '@/shared/ui/Field';
 
 const { Title, Text } = Typography;
-
-interface Fields {
-  username: string;
-  password: string;
-}
 
 export const LoginForm = () => {
   const {
@@ -82,7 +76,7 @@ export const LoginForm = () => {
 
         <Form className={styles.form}>
           <Flex gap={16} vertical>
-            <LoginField
+            <Field<LoginFormValues>
               name="username"
               error={errors.username}
               allowClear={{
@@ -93,7 +87,7 @@ export const LoginForm = () => {
               prefix={<PersonIcon />}
               control={control}
             />
-            <LoginField
+            <Field<LoginFormValues>
               name="password"
               error={errors.password}
               suffix={

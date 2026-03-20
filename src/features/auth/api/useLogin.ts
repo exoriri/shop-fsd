@@ -26,9 +26,9 @@ const login = async (credentials: Credentials) => {
   try {
     const response = await apiClient.post<LoginResponse>('/auth/login', credentials);
     return response.data;
-  } catch (error) {
-    const err = error as AxiosError<ApiError>;
-    throw new Error(err?.response?.data.message);
+  } catch (err) {
+    const error = err as AxiosError<ApiError>;
+    throw new Error(error?.response?.data.message);
   }
 };
 
@@ -61,10 +61,10 @@ export const useLogin = () => {
   });
 
   return {
-    login: mutate,
     isPending,
     error,
     rememberUser,
+    login: mutate,
     setRememberUser,
   };
 };

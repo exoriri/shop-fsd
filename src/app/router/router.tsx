@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { AuthPage } from '@/pages';
 import { PublicRoute } from './public-route';
 import { ProtectedRoute } from './protected-route';
+import { ProductsPage } from '@/pages/products-page';
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
-      { path: ROUTES.home, Component: () => <div>asjkfdlkasjdkflsjfsk</div> },
+      { path: ROUTES.home, Component: ProductsPage },
     ],
   },
 ]);

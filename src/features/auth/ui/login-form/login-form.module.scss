@@ -52,26 +52,6 @@ $lightBorder: #ededed;
   gap: 32px;
 }
 
-.label {
-  font-size: 18px;
-  font-family: Inter;
-  color: #232323;
-}
-
-.inputGroup {
-  gap: 6px;
-}
-
-.input {
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  gap: 14px;
-  background-color: #ffffff;
-  border: 1.5px solid $lightBorder;
-}
-
 .rememberText {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
@@ -168,5 +148,3 @@ $lightBorder: #ededed;
     fill: #c3c1c1;
   }
 }
-
-.formItem {margin: 0;}
