@@ -4,7 +4,6 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginSvgr } from '@rsbuild/plugin-svgr';
 
 
-// Docs: https://rsbuild.rs/config/
 export default defineConfig({
   plugins: [pluginReact(), pluginSass(), pluginSvgr()],
   resolve: {
@@ -13,4 +12,7 @@ export default defineConfig({
       'icons': './public/icons'
     },
   },
+  html: {
+    title: 'Тестовое задание',
+  }
 });

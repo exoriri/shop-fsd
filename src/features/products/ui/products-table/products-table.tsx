@@ -13,6 +13,7 @@ import { useElementHeight } from '../../lib/useElementHeight';
 import { TableHeader } from './table-header/';
 import { TableFooter } from './table-footer';
 import { useProductsStore } from '@/entities/product/store/useProductsStore';
+import { AddProductModal } from '../add-product-modal';
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>['rowSelection'];
@@ -74,6 +75,7 @@ export const ProductsTable = ({
   fetching,
 }: ProductsTableProps) => {
   const { currentPage, setCurrentPage } = useProductsStore((state) => state);
+  const [adding, setAdding] = useState(false);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const { ref, height } = useElementHeight();
@@ -106,6 +108,13 @@ export const ProductsTable = ({
     setCurrentPage(1);
   };
 
+  const openModal = () => {
+    setAdding(true);
+  };
+  const closeModal = () => {
+    setAdding(false);
+  };
+
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys,
     checkStrictly: true,
@@ -119,28 +128,31 @@ export const ProductsTable = ({
   };
 
   return (
-    <Flex gap={40} vertical className={styles.container}>
-      <TableHeader onRefresh={handleRefresh} onAdd={() => {}} />
-      <Flex vertical style={{ flex: 1, minHeight: 0 }} ref={ref}>
-        <Table<DataType>
-          rowSelection={rowSelection}
-          columns={columns}
-          sticky
-          dataSource={dataSource ?? []}
-          rowClassName={(record) =>
-            `${styles.row} ${selectedRowKeys.includes(record.key) ? styles.selectedRow : ''}`
-          }
-          scroll={{ y: height - 110, x: 'max-content' }}
-          style={{ width: '100%' }}
-          pagination={false}
-          loading={fetching}
-        />
-        <TableFooter
-          currentPage={currentPage}
-          totalAmount={itemsAmount}
-          onChange={handleChangePage}
-        />
+    <>
+      <Flex gap={40} vertical className={styles.container}>
+        <TableHeader onRefresh={handleRefresh} onAdd={openModal} />
+        <Flex vertical style={{ flex: 1, minHeight: 0 }} ref={ref}>
+          <Table<DataType>
+            rowSelection={rowSelection}
+            columns={columns}
+            sticky
+            dataSource={dataSource ?? []}
+            rowClassName={(record) =>
+              `${styles.row} ${selectedRowKeys.includes(record.key) ? styles.selectedRow : ''}`
+            }
+            scroll={{ y: height - 110, x: 'max-content' }}
+            style={{ width: '100%' }}
+            pagination={false}
+            loading={fetching}
+          />
+          <TableFooter
+            currentPage={currentPage}
+            totalAmount={itemsAmount}
+            onChange={handleChangePage}
+          />
+        </Flex>
       </Flex>
-    </Flex>
+      <AddProductModal open={adding} onClose={closeModal} />
+    </>
   );
 };

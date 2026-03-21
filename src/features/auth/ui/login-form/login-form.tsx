@@ -82,7 +82,7 @@ export const LoginForm = () => {
             <Flex gap={16} vertical>
               <Field<LoginFormValues>
                 name="username"
-                error={errors.username}
+                error={errors.username?.message}
                 allowClear={{
                   clearIcon: <CrossIcon />,
                 }}
@@ -93,7 +93,7 @@ export const LoginForm = () => {
               />
               <Field<LoginFormValues>
                 name="password"
-                error={errors.password}
+                error={errors.password?.message}
                 suffix={
                   <Button
                     className={styles.eyeButton}

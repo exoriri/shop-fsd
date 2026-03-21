@@ -2,7 +2,6 @@ import { Flex, Form, Input } from 'antd';
 import {
   Controller,
   type Control,
-  type FieldError,
   type FieldValues,
   type Path,
 } from 'react-hook-form';
@@ -13,7 +12,7 @@ interface FieldProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
   placeholder: string;
-  prefix: React.ReactNode;
+  prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   autoComplete?: string;
   allowClear?:
@@ -22,7 +21,7 @@ interface FieldProps<T extends FieldValues> {
         clearIcon?: React.ReactNode;
       }
     | undefined;
-  error: FieldError | undefined;
+  error: string | undefined;
   control: Control<T>;
   type?: string;
 }
@@ -46,7 +45,7 @@ export const Field = <T extends FieldValues>({
       <Form.Item
         className={styles.formItem}
         validateStatus={error ? 'error' : ''}
-        help={error?.message || undefined}
+        help={error || undefined}
       >
         <Controller
           name={name}

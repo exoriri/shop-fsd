@@ -1,6 +1,5 @@
 import { z } from 'zod';
-
-const EMPTY_ERROR_MESSAGE = 'Поле не должно быть пустым';
+import { EMPTY_ERROR_MESSAGE } from '@/shared/constants';
 
 const schema = z.object({
   username: z.string().min(1, EMPTY_ERROR_MESSAGE),

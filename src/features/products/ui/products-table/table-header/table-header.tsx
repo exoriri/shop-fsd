@@ -8,7 +8,7 @@ interface TableHeaderProps {
   onAdd: () => void;
 }
 
-export const TableHeader = ({ onRefresh }: TableHeaderProps) => {
+export const TableHeader = ({ onAdd, onRefresh }: TableHeaderProps) => {
   return (
     <Flex align="center" justify="space-between">
       <h3 className={styles.tableTitle}>Все позиции</h3>
@@ -18,7 +18,7 @@ export const TableHeader = ({ onRefresh }: TableHeaderProps) => {
             <ArrowClockwiseIcon />
           </div>
         </Button>
-        <Button className={styles.addButton} type="primary">
+        <Button className={styles.addButton} type="primary" onClick={onAdd}>
           <PlusCircleIcon />
           <span>Добавить</span>
         </Button>
