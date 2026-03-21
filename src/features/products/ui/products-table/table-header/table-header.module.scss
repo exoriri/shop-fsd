@@ -8,7 +8,7 @@
   height: 42px;
 }
 
-.refreshButton {
+.iconButton {
   height: 42px;
   width: 42px;
   display: flex;
@@ -17,6 +17,10 @@
   cursor: pointer;
 }
 
-.refreshIconWrapper {
+.iconWrapper {
     max-height: 22px;
+}
+
+.popup {
+    background: #fff;
 }

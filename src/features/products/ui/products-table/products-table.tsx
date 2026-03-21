@@ -1,33 +1,24 @@
-import type { Product } from '@/entities/product/model/types';
-import {
-  Flex,
-  Image,
-  Table,
-  type TableColumnsType,
-  type TableProps,
-} from 'antd';
+import type { Product, ProductDataType } from '@/entities/product/model/types';
+import { Flex, Table, type TableColumnsType, type TableProps } from 'antd';
 import { useMemo, useState } from 'react';
 
 import styles from './products-table.module.scss';
 import { useElementHeight } from '../../lib/useElementHeight';
 import { TableHeader } from './table-header/';
 import { TableFooter } from './table-footer';
-import { useProductsStore } from '@/entities/product/store/useProductsStore';
+import {
+  useProductsStore,
+  type SortType,
+} from '@/entities/product/store/useProductsStore';
 import { AddProductModal } from '../add-product-modal';
+import { ProductName } from './product-name';
+import { Rating } from './rating';
+import { Brand } from './brand';
+import { Actions } from './actions';
+import { Price } from './price';
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>['rowSelection'];
-
-interface DataType {
-  key: React.Key;
-  brand: string;
-  name: string;
-  category: string;
-  sku: string;
-  price: number;
-  rating: number;
-  images: string[];
-}
 
 interface ProductsTableProps {
   products: Array<Product> | undefined;
@@ -35,38 +26,39 @@ interface ProductsTableProps {
   fetching: boolean;
 }
 
-const columns: TableColumnsType<DataType> = [
+const columns: TableColumnsType<ProductDataType> = [
   {
     title: 'Наименование',
     dataIndex: 'name',
-    width: 315,
-    render: (text, record) => (
-      <Flex align="center" gap={18}>
-        <Image
-          src={record.images?.[0]}
-          alt={text}
-          preview
-          className={styles.image}
-        />
-        <Flex style={{ maxWidth: 210 }} vertical>
-          <span className={styles.name}>{record.name}</span>
-          <span className={styles.description}>{record.category}</span>
-        </Flex>
-      </Flex>
+    render: (_text, record) => (
+      <ProductName
+        imageUrl={record.images[0]}
+        name={record.name}
+        category={record.category}
+      />
     ),
   },
-  { title: 'Вендор', dataIndex: 'brand' },
+  {
+    title: 'Вендор',
+    dataIndex: 'brand',
+    render: (_text, record) => <Brand title={record.brand} />,
+  },
   { title: 'Артикул', dataIndex: 'sku' },
   {
     title: 'Оценка',
     dataIndex: 'rating',
-    render: (_, record) => (
-      <p>
-        <span>{record.rating.toFixed(1)}</span>/5
-      </p>
-    ),
+    render: (_text, record) => <Rating rating={record.rating} />,
   },
-  { title: 'Цена, ₽', dataIndex: 'price' },
+  {
+    title: 'Цена, ₽',
+    dataIndex: 'price',
+    render: (_text, record) => <Price value={record.price} />,
+  },
+  {
+    title: '',
+    key: 'action',
+    render: () => <Actions />,
+  },
 ];
 
 export const ProductsTable = ({
@@ -74,7 +66,9 @@ export const ProductsTable = ({
   itemsAmount,
   fetching,
 }: ProductsTableProps) => {
-  const { currentPage, setCurrentPage } = useProductsStore((state) => state);
+  const { currentPage, sort, setCurrentPage, setSort } = useProductsStore(
+    (state) => state,
+  );
   const [adding, setAdding] = useState(false);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -84,7 +78,7 @@ export const ProductsTable = ({
     return products?.map(
       ({ id, title, price, sku, rating, brand, category, images }) => ({
         key: id,
-        brand: brand ?? '—',
+        brand: brand,
         name: title,
         category,
         sku,
@@ -96,7 +90,6 @@ export const ProductsTable = ({
   }, [products]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -105,6 +98,7 @@ export const ProductsTable = ({
   };
 
   const handleRefresh = () => {
+    setSort('lowPrice');
     setCurrentPage(1);
   };
 
@@ -115,7 +109,11 @@ export const ProductsTable = ({
     setAdding(false);
   };
 
-  const rowSelection: TableRowSelection<DataType> = {
+  const handleSortChange = (type: SortType) => () => {
+    setSort(type);
+  };
+
+  const rowSelection: TableRowSelection<ProductDataType> = {
     selectedRowKeys,
     checkStrictly: true,
     onChange: onSelectChange,
@@ -130,13 +128,17 @@ export const ProductsTable = ({
   return (
     <>
       <Flex gap={40} vertical className={styles.container}>
-        <TableHeader onRefresh={handleRefresh} onAdd={openModal} />
+        <TableHeader
+          onRefresh={handleRefresh}
+          onAdd={openModal}
+          onSortChange={handleSortChange}
+        />
         <Flex vertical style={{ flex: 1, minHeight: 0 }} ref={ref}>
-          <Table<DataType>
+          <Table<ProductDataType>
             rowSelection={rowSelection}
             columns={columns}
             sticky
-            dataSource={dataSource ?? []}
+            dataSource={dataSource ? [...dataSource].sort(sort) : []}
             rowClassName={(record) =>
               `${styles.row} ${selectedRowKeys.includes(record.key) ? styles.selectedRow : ''}`
             }

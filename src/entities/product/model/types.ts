@@ -43,3 +43,14 @@ export interface Product {
   thumbnail: string;
   images: string[];
 }
+
+export interface ProductDataType {
+  key: React.Key;
+  brand: string;
+  name: string;
+  category: string;
+  sku: string;
+  price: number;
+  rating: number;
+  images: string[];
+}
