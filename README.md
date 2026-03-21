@@ -1,4 +1,7 @@
-# Тестовое задание с регистрацией, таблицей продуктов, валидациями, формами и сортировками
+# Тестовое задание.
+
+Веб-приложение с регистрацией, таблицей продуктов, валидациями, формами и сортировками.\n
+Архитектура сделана в стиле Feature-sliced design.
 
 ## Установка
 
@@ -16,5 +19,9 @@ yarn run dev
 
 ## Стэк
 
-- [Rsbuild documentation](https://rsbuild.rs) - explore Rsbuild features and APIs.
-- [Rsbuild GitHub repository](https://github.com/web-infra-dev/rsbuild) - your feedback and contributions are welcome!
+- React 19, Typescript
+- Rsbuild - для сборки
+- Zustand - для управления состоянием
+- Tanstack query - для удобного управления состояниями запросов и кеширования
+- Ant Design - ui-библиотека
+- Css modules - для того чтобы инкапсулиовать стили покомпонентно
