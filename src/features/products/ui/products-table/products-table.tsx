@@ -1,6 +1,5 @@
 import type { Product } from '@/entities/product/model/types';
 import {
-  Button,
   Flex,
   Image,
   Table,
@@ -11,6 +10,9 @@ import { useMemo, useState } from 'react';
 
 import styles from './products-table.module.scss';
 import { useElementHeight } from '../../lib/useElementHeight';
+import { TableHeader } from './table-header/';
+import { TableFooter } from './table-footer';
+import { useProductsStore } from '@/entities/product/store/useProductsStore';
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>['rowSelection'];
@@ -19,6 +21,7 @@ interface DataType {
   key: React.Key;
   brand: string;
   name: string;
+  category: string;
   sku: string;
   price: number;
   rating: number;
@@ -28,50 +31,60 @@ interface DataType {
 interface ProductsTableProps {
   products: Array<Product> | undefined;
   itemsAmount: number;
+  fetching: boolean;
 }
 
 const columns: TableColumnsType<DataType> = [
   {
     title: 'Наименование',
     dataIndex: 'name',
+    width: 315,
     render: (text, record) => (
-      <Flex gap={18}>
+      <Flex align="center" gap={18}>
         <Image
           src={record.images?.[0]}
           alt={text}
-          preview={false}
-          style={{
-            objectFit: 'contain',
-            width: 48,
-            height: 48,
-            maxWidth: 48,
-            maxHeight: 48,
-          }}
+          preview
+          className={styles.image}
         />
-        <span>{text}</span>
+        <Flex style={{ maxWidth: 210 }} vertical>
+          <span className={styles.name}>{record.name}</span>
+          <span className={styles.description}>{record.category}</span>
+        </Flex>
       </Flex>
     ),
   },
   { title: 'Вендор', dataIndex: 'brand' },
   { title: 'Артикул', dataIndex: 'sku' },
-  { title: 'Оценка', dataIndex: 'rating' },
+  {
+    title: 'Оценка',
+    dataIndex: 'rating',
+    render: (_, record) => (
+      <p>
+        <span>{record.rating.toFixed(1)}</span>/5
+      </p>
+    ),
+  },
   { title: 'Цена, ₽', dataIndex: 'price' },
 ];
 
 export const ProductsTable = ({
   products,
   itemsAmount,
+  fetching,
 }: ProductsTableProps) => {
+  const { currentPage, setCurrentPage } = useProductsStore((state) => state);
+
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [loading, setLoading] = useState(false);
   const { ref, height } = useElementHeight();
 
   const dataSource = useMemo(() => {
     return products?.map(
-      ({ id, title, price, sku, rating, brand, images }) => ({
+      ({ id, title, price, sku, rating, brand, category, images }) => ({
         key: id,
-        brand,
+        brand: brand ?? '—',
         name: title,
+        category,
         sku,
         price,
         rating,
@@ -80,18 +93,17 @@ export const ProductsTable = ({
     );
   }, [products]);
 
-  const start = () => {
-    setLoading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
-  };
-
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleRefresh = () => {
+    setCurrentPage(1);
   };
 
   const rowSelection: TableRowSelection<DataType> = {
@@ -106,22 +118,10 @@ export const ProductsTable = ({
     }),
   };
 
-  const hasSelected = selectedRowKeys.length > 0;
-
   return (
-    <Flex gap="medium" vertical className={styles.container}>
-      <Flex align="center" gap="medium">
-        <Button
-          type="primary"
-          onClick={start}
-          disabled={!hasSelected}
-          loading={loading}
-        >
-          Reload
-        </Button>
-        {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
-      </Flex>
-      <Flex style={{ flex: 1, minHeight: 0 }} ref={ref}>
+    <Flex gap={40} vertical className={styles.container}>
+      <TableHeader onRefresh={handleRefresh} onAdd={() => {}} />
+      <Flex vertical style={{ flex: 1, minHeight: 0 }} ref={ref}>
         <Table<DataType>
           rowSelection={rowSelection}
           columns={columns}
@@ -130,12 +130,15 @@ export const ProductsTable = ({
           rowClassName={(record) =>
             `${styles.row} ${selectedRowKeys.includes(record.key) ? styles.selectedRow : ''}`
           }
-          scroll={{ y: height - 100 }}
-          pagination={{
-            pageSize: 30,
-            total: itemsAmount,
-            showSizeChanger: false,
-          }}
+          scroll={{ y: height - 110, x: 'max-content' }}
+          style={{ width: '100%' }}
+          pagination={false}
+          loading={fetching}
+        />
+        <TableFooter
+          currentPage={currentPage}
+          totalAmount={itemsAmount}
+          onChange={handleChangePage}
         />
       </Flex>
     </Flex>

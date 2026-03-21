@@ -24,7 +24,10 @@ interface LoginResponse {
 
 const login = async (credentials: Credentials) => {
   try {
-    const response = await apiClient.post<LoginResponse>('/auth/login', credentials);
+    const response = await apiClient.post<LoginResponse>(
+      '/auth/login',
+      credentials,
+    );
     return response.data;
   } catch (err) {
     const error = err as AxiosError<ApiError>;
@@ -39,8 +42,12 @@ export const useLogin = () => {
   const { mutate, isPending, error } = useMutation({
     mutationFn: login,
     onError: (error) => {
+      const errorMessage =
+        error.message || 'Что-то не так. Попробуйте обновить страницу';
+
       notification.error({
-        message: error.message,
+        message: 'Ошибка',
+        description: errorMessage,
       });
     },
     onSuccess: (response) => {

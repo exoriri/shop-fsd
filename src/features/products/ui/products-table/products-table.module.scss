@@ -1,11 +1,12 @@
 $checkedBg: #3c538e;
 $borderColor: #e2e2e2;
+$grey: #b2b3b9;
 
 .checkbox {
   & :global(.ant-checkbox) {
     width: 22px;
     height: 22px;
-    border-color: #b2b3b9;
+    border-color: $grey;
     border-radius: 4px;
     z-index: 100;
   }
@@ -50,14 +51,14 @@ $borderColor: #e2e2e2;
 
 .container {
   background: #fff;
-  padding: 30px 26px 60px 26px;
+  padding: 30px 30px 60px 30px;
   flex: 1;
   min-height: 0;
 
   & :global(.ant-table-thead > tr > th) {
     height: 73px;
     background-color: #fff;
-    color: #b2b3b9;
+    color: $grey;
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     border-bottom: 1px solid $borderColor;
@@ -68,3 +69,29 @@ $borderColor: #e2e2e2;
     }
   }
 }
+
+.image {
+  object-fit: 'contain';
+  min-width: 48px;
+  min-height: 48px;
+  max-width: 48px;
+  max-height: 48px;
+}
+
+.name {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.description {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: $grey;
+}
+
+

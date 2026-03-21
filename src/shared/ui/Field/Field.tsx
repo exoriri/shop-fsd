@@ -24,6 +24,7 @@ interface FieldProps<T extends FieldValues> {
     | undefined;
   error: FieldError | undefined;
   control: Control<T>;
+  type?: string;
 }
 
 export const Field = <T extends FieldValues>({

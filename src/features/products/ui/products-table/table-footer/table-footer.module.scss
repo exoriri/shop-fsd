@@ -1,0 +1,34 @@
+@use '@/shared/theme/variables.scss' as variables;
+
+.shownText {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: #969b9f;
+}
+
+.shownNumber {
+  font-size: 18px;
+  font-weight: 300;
+  color: #000;
+}
+
+.pageButton {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ececeb;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+
+  &:hover {
+    background: variables.$primaryColor !important;
+    color: #fff !important;
+  }
+}
+
+.activePageButton {
+  background: variables.$primaryColor;
+  border-color: variables.$primaryColor;
+  color: #fff;
+}

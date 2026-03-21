@@ -1,0 +1,22 @@
+.tableTitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.addButton {
+  height: 42px;
+}
+
+.refreshButton {
+  height: 42px;
+  width: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.refreshIconWrapper {
+    max-height: 22px;
+}

@@ -7,8 +7,11 @@ export interface ApiError {
   message?: string;
 }
 
+const REQUEST_TIMEOUT = 40 * 1000;
+
 const apiClient = axios.create({
   baseURL: process.env.PUBLIC_BASE_URL || import.meta.env.PUBLIC_BASE_URL,
+  timeout: REQUEST_TIMEOUT,
 });
 
 apiClient.interceptors.request.use((config) => {
