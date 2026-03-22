@@ -70,7 +70,7 @@ export const LoginForm = () => {
 
   return (
     <div className={styles.container}>
-      <Flex align='center' vertical className={styles.formWrapper}>
+      <Flex align="center" gap={10} vertical className={styles.formWrapper}>
         <ShadowedLogoIcon />
         <Flex vertical gap={32}>
           <div className={styles.text}>
@@ -139,12 +139,12 @@ export const LoginForm = () => {
                 <div className={styles.line} />
               </div>
             </div>
-            <Flex justify="center">
-              <p className={styles.noAccountText}>
-                Нет аккаунта? <a className={styles.createLink}>Создать</a>
-              </p>
-            </Flex>
           </Form>
+          <Flex justify="center">
+            <p className={styles.noAccountText}>
+              Нет аккаунта? <a className={styles.createLink}>Создать</a>
+            </p>
+          </Flex>
         </Flex>
       </Flex>
     </div>

@@ -21,6 +21,7 @@ $lightBorder: #ededed;
   border-radius: 34px;
   padding: 48px;
   border: 1px solid $borderColor;
+  background-color: #fafafa;
 }
 
 .text {
@@ -49,7 +50,6 @@ $lightBorder: #ededed;
 .form {
   display: flex;
   flex-direction: column;
-  gap: 32px;
 }
 
 .rememberText {
@@ -79,6 +79,8 @@ $lightBorder: #ededed;
 }
 
 .rememberCheckbox {
+  margin: 20px 0;
+
   & span:first-of-type,
   input {
     border-color: $lightBorder;
