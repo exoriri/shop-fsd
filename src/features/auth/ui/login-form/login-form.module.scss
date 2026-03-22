@@ -14,7 +14,6 @@ $lightBorder: #ededed;
   max-width: fit-content;
   max-height: fit-content;
   background-color: #ffffff;
-  filter: drop-shadow(0px 24px 32px rgba(0, 0, 0, 0.04));
 }
 
 .formWrapper {
@@ -22,6 +21,7 @@ $lightBorder: #ededed;
   padding: 48px;
   border: 1px solid $borderColor;
   background-color: #fafafa;
+  box-shadow: 0 24px 32px 0 rgba(0, 0, 0, 0.04);
 }
 
 .text {
