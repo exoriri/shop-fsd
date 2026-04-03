@@ -15,7 +15,7 @@ https://github.com/user-attachments/assets/d4e92a5e-4d09-4d53-8033-52099cdc2ba8
 yarn install
 ```
 
-Потом запустить сервер. Будет доступен по [http://localhost:3000](http://localhost:3000).
+Потом запустить сервер. (Скорее всего нужен VPN, провайдеры разные точно сказать сложно). Сервер доступен по [http://localhost:3000](http://localhost:3000).
 
 ```bash
 yarn run dev
